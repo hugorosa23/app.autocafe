@@ -3,9 +3,9 @@ import { MdShoppingBasket } from "react-icons/md";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom"
 
-import Logo from "./img/logo.png";
-import Avatar from "./img/avatar.png"
-import Slogan from "./img/slogan.png"
+import Logo from "../img/logo.png";
+import Avatar from "../img/avatar.png"
+import Slogan from "../img/slogan.png"
 
 const Header = () => {
     return (
