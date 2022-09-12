@@ -1,40 +1,59 @@
-import React from "react";
-import Delivery from "../img/delivery.png"
+import React, { useEffect, useState } from "react";
+import HomeContainer from "./HomeContainer";
+import { motion } from "framer-motion";
+import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
+import RowContainer from "./RowContainer";
+import { useStateValue } from "../context/StateProvider";
+import MenuContainer from "./MenuContainer";
+import CartContainer from "./CartContainer";
 
 const MainContainer = () => {
-    return (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-            <div className="py-2 flex-1 flex flex-col items-start 
-            justify-start gap-5">
-                <div className="flex items-center gap-2 justify-center bg-red-100 
-                px-4 py-1 rounded-full">
-                    <p className="text-base text-red-500 font-semibold">Serviço de Entregas</p>
+    const [{ foodItems, cartShow }, dispatch] = useStateValue();
+    const [scrollValue, setScrollValue] = useState(0);
 
-                    <div className="w-8 h-8 bg-white rounded-full overflow-hidden
-                    drop-shadow-xl">
-                        <img src={Delivery}
-                            className="w-full h-full object-contain"
-                            alt="Delivery"
-                        />
+    useEffect(() => { }, [scrollValue, cartShow]);
+
+    return (
+        <div className="w-full h-auto flex flex-col items-center justify-center">
+            <HomeContainer />
+            {/* Titulo e setas de rolar(scroll) */}
+            <section className="w-full my-6">
+                <div className="w-full flex items-center justify-between">
+                    <p className="text-2xl font-semibold capitalize text-headingColor relative 
+                        before:absolute before:rounded-lg before:content before:w-32 before:h-1 before:-bottom-2 
+                        before:left-0 before:bg-gradient-to-tr from-red-400 to-red-600 transition-all 
+                        ease-in-out duration-100">Mais pedidos!
+                    </p>
+
+                    <div className="hidden md:flex gap-3 items-center ">
+                        <motion.div whileTap={{ scale: 0.75 }} className="w-8 h-8 rounded-lg bg-red-300 hover:bg-red-500 cursor-pointer
+                            hover:shadow-lg flex items-center justify-center"
+                            onClick={() => setScrollValue(-700)}
+                        >
+                            <MdChevronLeft className="text-lg text-white" />
+                        </motion.div>
+                        <motion.div whileTap={{ scale: 0.75 }} className="w-8 h-8 rounded-lg bg-red-300 hover:bg-red-500 cursor-pointer
+                            hover:shadow-lg flex items-center justify-center"
+                            onClick={() => setScrollValue(700)}
+                        >
+                            <MdChevronRight className="text-lg text-white" />
+                        </motion.div>
                     </div>
                 </div>
+                <RowContainer
+                    scrollValue={scrollValue}
+                    flag={true}
+                    data={foodItems?.filter(n => n.category === "favoritos")}
+                />
+            </section>
 
-                <p className="text-[2rem] font-bold tracking-wide text-headingColor">
-                    A entrega mais deliciosa de{" "}
-                    <span className="text-red-600 text-[2.5rem]">Maragogi</span></p>
+            <MenuContainer />
 
-                <p className="text-base text-textColor text-center md:text-left">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Suscipit velit itaque quae dolore modi expedita deserunt
-                    consectetur aliquid quaerat impedit possimus laborum autem
-                    sunt repellendus quam voluptate, neque dicta ut.</p>
-
-                <button type="button" className="bg-gradient-to-br from-red-400 to-red-500 
-                w-full md:w-auto px-4 py-2 rounded-lg hover:shadow-lg transition-all 
-                ease-in-out duration-100">Solicite Agora</button>
-            </div>
-            <div className="py-2 bg-blue-400 flex-1"></div>
+            {cartShow && (
+                <CartContainer />
+            )}
         </div>
-    )
-}
+    );
+};
 
 export default MainContainer
